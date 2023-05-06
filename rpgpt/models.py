@@ -1,7 +1,9 @@
 import random
 from django.db import models
 from rpgpt.helper_functions import generate_random_name, imagine_characters
+import openai
 
+openai.api_key = "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"
 
 class CharacterClass(models.TextChoices):
     BARBARIAN = 'Barbarian'
@@ -32,6 +34,7 @@ class Character(models.Model):
     character_class = models.CharField(max_length=20, choices=CharacterClass.choices)
     race: str = models.CharField(max_length=100)
     hp: int = models.IntegerField(default=100)
+    img_icon_url: str = models.CharField(max_length=400, default="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpA_2RZ3HMN0pbKHXoNd4UpnBoxkSccoUkUg&usqp=CAU")
 
     def create_random_character(self) -> None:
         """
@@ -44,13 +47,17 @@ class Character(models.Model):
             hp=random.choice(range(20))
         )
 
-    def imagine_character(self) -> None:
-        ch = imagine_characters(1, params=["race", "name", "class", "hp"])
-        Character.objects.create(
+    def imagine_character(description) -> None:
+        ch = imagine_characters(1, params=["race", "name", "class", "hp"], tags=description.split(' '))
+        img_url = openai.Image.create(prompt=description + "DND player icon" + ", ".join(ch[0].values()), n=1, model="image-alpha-001", size="256x256", response_format="url").data[0].url
+        chr = Character.objects.create(
             name=ch[0]['name'],
             character_class=ch[0]['class'],
             race=ch[0]['race'],
-            hp=ch[0]['hp'])
+            hp=ch[0]['hp'],
+            img_icon_url=img_url)
+        
+        return chr
 
 class Story(models.Model):
     """
