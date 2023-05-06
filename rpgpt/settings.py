@@ -55,7 +55,7 @@ ROOT_URLCONF = "rpgpt.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": ["rpgpt/templates/"],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
