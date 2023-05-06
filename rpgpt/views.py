@@ -1,11 +1,17 @@
 from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
 
 
 def intro_page(request):
     return render(request, 'intro.html', {})
 
-
+@csrf_exempt
 def character_creation(request):
+    print(request)
+    if request.method == 'POST':
+        character_description = request.POST.get('comment')
+        print(character_description)
+        print("POSTed")
     return render(request, 'character_creation.html', {})
 
 
