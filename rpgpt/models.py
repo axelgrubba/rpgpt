@@ -3,7 +3,7 @@ from django.db import models
 from rpgpt.helper_functions import generate_random_name, imagine_characters
 import openai
 
-openai.api_key = "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"
+openai.api_key = open("./rpgpt/openai_api_key.txt", "r").read().strip()
 
 class CharacterClass(models.TextChoices):
     BARBARIAN = 'Barbarian'
