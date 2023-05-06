@@ -29,7 +29,7 @@ def imagine_characters(n=4, tags=["medieval", "fantasy", "magical"], params = ["
     
     for i in range(n):
         msg = "Character sheet for character number " + str(i+1) + ".\n"        
-        response = gpt.chat(msg, append_to_history=False)
+        response = gpt.chat(msg, append_to_history=True)
 
         character = {}
         for line in response.split('\n'):

@@ -6,7 +6,7 @@ import openai
 from django.http import JsonResponse
 from rpgpt.gptapi import GPT
 
-USE_AI_CHARACTERS = False
+USE_AI_CHARACTERS = True
 system_msg = open("./rpgpt/gm_system_msg.txt", "r").read().strip('\n')
 gpt = GPT(system_msg=system_msg)
 
@@ -83,11 +83,16 @@ def game_intro(request):
 
 def chat(request):
     chats = rpgpt.models.Chat.objects.all()
+    character = Character.objects.all().latest("id")
     return render(
         request,
         "chat.html",
         {
             "chats": chats,
+            "icon": character.img_icon_url,
+            "name": character.name,
+            "race": character.race,
+            "class": character.character_class
         },
     )
 
