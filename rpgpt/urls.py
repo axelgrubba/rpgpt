@@ -1,5 +1,3 @@
-
-
 """
 URL configuration for rpgpt project.
 
