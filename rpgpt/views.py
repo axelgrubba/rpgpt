@@ -1,8 +1,8 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import rpgpt.models
-from django.http import HttpResponseRedirect
-from django.urls import reverse
+
+USE_AI_CHARACTERS = False
 
 def intro_page(request):
     return render(request, 'intro.html', {})
@@ -12,8 +12,11 @@ def character_creation(request):
     print(request)
     if request.method == 'POST':
         character_description = request.POST.get('comment')
-        #character = rpgpt.models.Character.imagine_character(character_description)
-        character = rpgpt.models.Character.create_random_character()
+
+        if USE_AI_CHARACTERS:
+            character = rpgpt.models.Character.imagine_character(character_description)
+        else:
+            character = rpgpt.models.Character.create_random_character()
 
         return render(request, 'character_creation.html',
                       {"name": character.name,
