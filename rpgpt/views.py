@@ -1,9 +1,9 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import rpgpt.models
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from rpgpt.models import Character
-import openai
-from django.http import JsonResponse
 
 USE_AI_CHARACTERS = False
 
@@ -76,40 +76,3 @@ def game_intro(request):
 
 # def game(request):
 #     return render(request, "game.html", {})
-
-
-def chat(request):
-    chats = rpgpt.models.Chat.objects.all()
-    return render(
-        request,
-        "chat.html",
-        {
-            "chats": chats,
-        },
-    )
-
-
-@csrf_exempt
-def Ajax(request):
-    if (
-        request.headers.get("X-Requested-With") == "XMLHttpRequest"
-    ):  # Check if request is Ajax
-        text = request.POST.get("text")
-        print(text)
-
-        openai.api_key = "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"  # Here you have to add your api key.
-        res = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=[{"role": "user", "content": f"{text}"}]
-        )
-
-        response = res.choices[0].message["content"]
-        print(response)
-
-        chat = rpgpt.models.Chat.objects.create(text=text, gpt=response)
-
-        return JsonResponse(
-            {
-                "data": response,
-            }
-        )
-    return JsonResponse({})

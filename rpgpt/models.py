@@ -78,9 +78,3 @@ class StoryState(models.Model):
     weather: str = models.CharField(max_length=200)
     chosen_actions: str = models.JSONField()  # mapping of characters to string actions
     outcome: str = models.TextField()
-
-
-class Chat(models.Model):
-    text = models.CharField(max_length=500)
-    gpt = models.CharField(max_length=17000)
-    date = models.DateTimeField(auto_now_add=True, blank=True, null=True)
