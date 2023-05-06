@@ -1,12 +1,9 @@
 from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 import rpgpt.models
-<<<<<<< HEAD
 
 USE_AI_CHARACTERS = False
-=======
 from rpgpt.models import Character
->>>>>>> 9dd1ae2 (Create random characters)
 
 def intro_page(request):
     return render(request, 'intro.html', {})
