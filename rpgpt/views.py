@@ -4,9 +4,11 @@ import rpgpt.models
 from rpgpt.models import Character
 import openai
 from django.http import JsonResponse
+from rpgpt.gptapi import GPT
 
 USE_AI_CHARACTERS = False
-
+system_msg = open("./rpgpt/gm_system_msg.txt", "r").read().strip('\n')
+gpt = GPT(system_msg=system_msg)
 
 def intro_page(request):
     return render(request, "intro.html", {})
@@ -62,7 +64,7 @@ def story_creation(request):
 
 
 def game_intro(request):
-    character = Character.objects.latest("id")
+    character = Character.objects.all().latest("id")
     return render(
         request,
         "game_intro.html",
@@ -70,6 +72,7 @@ def game_intro(request):
             "name": character.name,
             "race": character.race,
             "class": character.character_class,
+            "icon": character.img_icon_url,
         },
     )
 
@@ -91,25 +94,13 @@ def chat(request):
 
 @csrf_exempt
 def Ajax(request):
-    if (
-        request.headers.get("X-Requested-With") == "XMLHttpRequest"
-    ):  # Check if request is Ajax
+    if (request.headers.get("X-Requested-With") == "XMLHttpRequest"):  # Check if request is Ajax
+
         text = request.POST.get("text")
         print(text)
-
-        openai.api_key = open("./rpgpt/openai_api_key.txt", "r").read().strip()  # Here you have to add your api key.
-        res = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo", messages=[{"role": "user", "content": f"{text}"}]
-        )
-
-        response = res.choices[0].message["content"]
+        response = gpt.chat(text)
         print(response)
-
         chat = rpgpt.models.Chat.objects.create(text=text, gpt=response)
 
-        return JsonResponse(
-            {
-                "data": response,
-            }
-        )
+        return JsonResponse({"data": response,})
     return JsonResponse({})

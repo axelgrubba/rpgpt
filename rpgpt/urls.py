@@ -27,5 +27,6 @@ urlpatterns = [
     path("story-creation", views.story_creation, name="story_creation"),
     path("game-intro", views.game_intro, name="game_intro"),
     path("game", views.chat, name="chat"),
+    path("game/", views.chat, name="chat"),
     path("ajax/", views.Ajax, name="ajax"),
 ]
