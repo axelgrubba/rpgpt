@@ -36,6 +36,7 @@ class Character(models.Model):
     hp: int = models.IntegerField(default=100)
     img_icon_url: str = models.CharField(max_length=400, default="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpA_2RZ3HMN0pbKHXoNd4UpnBoxkSccoUkUg&usqp=CAU")
 
+    @staticmethod
     def create_random_character() -> None:
         """
         Creates a Character object with random name, class, race and 100 HP.
@@ -48,7 +49,8 @@ class Character(models.Model):
             img_icon_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpA_2RZ3HMN0pbKHXoNd4UpnBoxkSccoUkUg&usqp=CAU")
         return chr
 
-    def imagine_character(description) -> None:
+    @staticmethod
+    def imagine_character( description) -> None:
         ch = imagine_characters(1, params=["race", "name", "class", "hp"], tags=description.split(' '))
         img_url = openai.Image.create(prompt=description + "DND player icon" + ", ".join(ch[0].values()), n=1, model="image-alpha-001", size="256x256", response_format="url").data[0].url
         chr = Character.objects.create(
