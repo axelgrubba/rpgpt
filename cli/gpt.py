@@ -1,5 +1,8 @@
 import openai
 
+# this shouldnt be here probably
+openai.api_key = open("OPENAI_API_KEY.txt", "r").read().strip("\n")
+
 class GPT:
     def __init__(self, model="gpt-3.5-turbo", system_msg=None):
         self.model = model
@@ -10,13 +13,10 @@ class GPT:
             self.message_history.append({"role": "user", "content": self.system_msg})
             self.message_history.append({"role": "assistant", "content": "Sure thing!"})
 
-        # this shouldnt be here probably
-        openai.api_key = open("OPENAI_API_KEY.txt", "r").read().strip("\n")
-
-    def chat(self, input, append_to_history=True):
+    def chat(self, input, append_to_history=False):
         
         self.message_history.append({"role": "user", "content": input})
-        
+    
         completion = openai.ChatCompletion.create(
           model=self.model,
           messages=self.message_history

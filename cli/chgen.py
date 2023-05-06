@@ -9,14 +9,11 @@ def chgen(n=4, tags=["medieval", "fantasy", "magical"], params = ["race", "class
         "Campaign story should fit into the following tags: " + ", ".join(tags) + "."
         "You will be asked to fill character sheets for couple of characters.\n"
         "Sheet must contain only the following parameters:\n" + ":\n".join(params))
-
-    #print(gpt.system_msg)
     
     for i in range(n):
         msg = "Character sheet for character number " + str(i+1) + ".\n"        
-        response = gpt.chat(msg)
-        #print(response)
-        
+        response = gpt.chat(msg, append_to_history=False)
+
         character = {}
         for line in response.split('\n'):
             if ':' not in line: continue
@@ -29,8 +26,8 @@ def chgen(n=4, tags=["medieval", "fantasy", "magical"], params = ["race", "class
 
     return characters
         
-def example_usage():
-    characters = chgen(n=3, tags=["cyberpunk", "future", "dystopian"], params=["name", "wealth", "age", "hp"])
+def example_usage(n=3):
+    characters = chgen(n=n, tags=["medieval", "magical", "fantasy"], params=["name", "wealth", "age", "hp"])
     
     for character in characters:
         print("Character: " + character["name"])
