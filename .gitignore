@@ -5,3 +5,4 @@ db.sqlite3
 *.env
 .vscode
 axel_templates/
+rpgpt/OPENAI_API_KEY.txt
