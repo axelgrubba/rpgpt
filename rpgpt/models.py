@@ -3,7 +3,7 @@ from django.db import models
 from rpgpt.helper_functions import generate_random_name, imagine_characters
 import openai
 
-openai.api_key = "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"
+openai.api_key = "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"
 
 class CharacterClass(models.TextChoices):
     BARBARIAN = 'Barbarian'
@@ -36,16 +36,17 @@ class Character(models.Model):
     hp: int = models.IntegerField(default=100)
     img_icon_url: str = models.CharField(max_length=400, default="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpA_2RZ3HMN0pbKHXoNd4UpnBoxkSccoUkUg&usqp=CAU")
 
-    def create_random_character(self) -> None:
+    def create_random_character() -> None:
         """
         Creates a Character object with random name, class, race and 100 HP.
         """
-        Character.objects.create(
+        chr = Character.objects.create(
             name=generate_random_name(),
-            character_class=random.choice(CharacterClass.choices),
-            race=random.choice(CharacterRace.choices),
-            hp=random.choice(range(20))
-        )
+            character_class=random.choice(CharacterClass.choices)[0],
+            race=random.choice(CharacterRace.choices)[0],
+            hp=random.choice(range(20)),
+            img_icon_url="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTpA_2RZ3HMN0pbKHXoNd4UpnBoxkSccoUkUg&usqp=CAU")
+        return chr
 
     def imagine_character(description) -> None:
         ch = imagine_characters(1, params=["race", "name", "class", "hp"], tags=description.split(' '))
