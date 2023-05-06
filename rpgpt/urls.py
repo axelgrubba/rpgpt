@@ -17,12 +17,16 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 import rpgpt.views as views
+from django.urls import path, include
+
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('', views.intro_page, name='intro_page'),
-    path('character-creation', views.character_creation, name="character_creation"),
-    path('story-creation', views.story_creation, name="story_creation"),
-    path('game-intro', views.game_intro, name="game_intro"),
-    path('game', views.game, name="game"),
+    # path("", views.intro_page, name="intro_page"),
+    path("character-creation", views.character_creation, name="character_creation"),
+    path("story-creation", views.story_creation, name="story_creation"),
+    path("game-intro", views.game_intro, name="game_intro"),
+    path("game", views.game, name="game"),
+    # chat paths
+    path("", include("chat.urls")),
 ]
