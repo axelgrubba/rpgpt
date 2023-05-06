@@ -1,7 +1,7 @@
 import openai
 
 # this shouldnt be here probably
-openai.api_key = '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'
+openai.api_key = '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'
 
 class GPT:
     def __init__(self, model="gpt-3.5-turbo", system_msg=None):
