@@ -1,3 +1,6 @@
 from django.contrib import admin
+from rpgpt.models import Character, Story, StoryState
 
-# Register your models here.
+admin.site.register(Character)
+admin.site.register(Story)
+admin.site.register(StoryState)
