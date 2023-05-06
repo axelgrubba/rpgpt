@@ -21,6 +21,6 @@ class Story(models.Model):
 class StoryState(models.Model):
     timestamp = models.DateTimeField(auto_now=True)
     environment_description: str = models.TextField()
-    weather: str = models.CharField()
+    weather: str = models.CharField(max_length=200)
     chosen_actions: str = models.JSONField()  # mapping of characters to string actions
     outcome: str = models.TextField()
