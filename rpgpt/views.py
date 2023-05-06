@@ -97,7 +97,7 @@ def Ajax(request):
         text = request.POST.get("text")
         print(text)
 
-        openai.api_key = "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"  # Here you have to add your api key.
+        openai.api_key = open("./rpgpt/openai_api_key.txt", "r").read().strip()  # Here you have to add your api key.
         res = openai.ChatCompletion.create(
             model="gpt-3.5-turbo", messages=[{"role": "user", "content": f"{text}"}]
         )
