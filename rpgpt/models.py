@@ -1,6 +1,6 @@
 import random
 from django.db import models
-from rpgpt.helper_functions import generate_random_name
+from rpgpt.helper_functions import generate_random_name, imagine_characters
 
 
 class CharacterClass(models.TextChoices):
@@ -43,6 +43,12 @@ class Character(models.Model):
             race=random.choice(CharacterRace.choices),
         )
 
+    def imagine_character(self) -> None:
+        ch = imagine_characters(1, params=["name", "class", "hp"])
+        Character.objects.create(
+            name=ch[0]['name'],
+            character_class=ch[0]['class'],
+            hp=ch[0]['hp'])
 
 class Story(models.Model):
     """
