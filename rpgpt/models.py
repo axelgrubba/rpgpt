@@ -1,8 +1,9 @@
 from django.db import models
+from rpgpt.helper_functions import generate_name
 
 
 class Character(models.Model):
-    name: str = models.CharField(max_length=100, default="ece")
+    name: str = models.CharField(max_length=100, default=generate_name())
     character_class: str = models.CharField(max_length=100)
     race: str = models.CharField(max_length=100)
     hp: int = models.IntegerField()
