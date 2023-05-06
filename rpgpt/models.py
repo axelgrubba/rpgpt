@@ -1,12 +1,47 @@
+import random
 from django.db import models
-from rpgpt.helper_functions import generate_name
+from rpgpt.helper_functions import generate_random_name
+
+
+class CharacterClass(models.TextChoices):
+    BARBARIAN = 'Barbarian'
+    BARD = 'Bard'
+    CLERIC = 'Cleric'
+    DRUID = 'Druid'
+    FIGHTER = 'Fighter'
+    MONK = 'Monk'
+    PALADIN = 'Paladin'
+    RANGER = 'Ranger'
+    ROGUE = 'Rogue'
+    SORCERER = 'Sorcerer'
+    WARLOCK = 'Warlock'
+    WIZARD = 'Wizard'
+
+
+class CharacterRace(models.TextChoices):
+    HUMAN = 'Human'
+    DWARF = 'Dwarf'
+    ELF = 'Elf'
+    GNOME = 'Gnome'
+    GOBLIN = 'Goblin'
+    ORC = 'Orc'
 
 
 class Character(models.Model):
-    name: str = models.CharField(max_length=100, default=generate_name())
-    character_class: str = models.CharField(max_length=100)
+    name: str = models.CharField(max_length=100)
+    character_class = models.CharField(max_length=20, choices=CharacterClass.choices)
     race: str = models.CharField(max_length=100)
-    hp: int = models.IntegerField()
+    hp: int = models.IntegerField(default=100)
+
+    def create_random_character(self) -> None:
+        """
+        Creates a Character object with random name, class, race and 100 HP.
+        """
+        Character.objects.create(
+            name=generate_random_name(),
+            character_class=random.choice(CharacterClass.choices),
+            race=random.choice(CharacterRace.choices),
+        )
 
 
 class Story(models.Model):
