@@ -62,7 +62,7 @@ def story_creation(request):
 
 
 def game_intro(request):
-    character = Character.objects.latest("id")
+    character = Character.objects.all().latest("id")
     return render(
         request,
         "game_intro.html",
@@ -70,6 +70,7 @@ def game_intro(request):
             "name": character.name,
             "race": character.race,
             "class": character.character_class,
+            "icon": character.img_icon_url,
         },
     )
 
