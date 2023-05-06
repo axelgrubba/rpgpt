@@ -41,13 +41,15 @@ class Character(models.Model):
             name=generate_random_name(),
             character_class=random.choice(CharacterClass.choices),
             race=random.choice(CharacterRace.choices),
+            hp=random.choice(range(20))
         )
 
     def imagine_character(self) -> None:
-        ch = imagine_characters(1, params=["name", "class", "hp"])
+        ch = imagine_characters(1, params=["race", "name", "class", "hp"])
         Character.objects.create(
             name=ch[0]['name'],
             character_class=ch[0]['class'],
+            race=ch[0]['race'],
             hp=ch[0]['hp'])
 
 class Story(models.Model):
